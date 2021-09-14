@@ -1,9 +1,11 @@
 from lib.my_requests import MyRequests
 from lib.assertions import Assertions
 from lib.base_case import BaseCase
+import allure
 
 
 class TestUserDelete(BaseCase):
+    @allure.severity(allure.severity_level.NORMAL)
     def test_delete_user_2(self):
         data = {
             'email': 'vinkotov@example.com',
@@ -21,6 +23,7 @@ class TestUserDelete(BaseCase):
 
         Assertions.assert_code_status(response2, 400)
 
+    @allure.severity(allure.severity_level.TRIVIAL)
     def test_delete_authorise_user(self):
         register_data = self.prepare_registration_data()
         response1 = MyRequests.post("/user/", data=register_data)
@@ -57,6 +60,7 @@ class TestUserDelete(BaseCase):
         Assertions.assert_code_status(response4, 404)
         assert response4.content.decode("utf-8") == f"User not found", f"Unexpected content {response4.content}"
 
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_delete_not_authorise_user(self):
         data = {
             'email': 'vinkotov@example.com',

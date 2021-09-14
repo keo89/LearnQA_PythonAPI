@@ -2,7 +2,7 @@ import pytest as pytest
 from lib.my_requests import MyRequests
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
-
+import allure
 
 class TestUserRegister(BaseCase):
     fields = [
@@ -13,9 +13,11 @@ class TestUserRegister(BaseCase):
         ("email")
     ]
 
+    @allure.story('story_1')
     def create_user_successfully(self):
         data = self.prepare_registration_data()
         response = MyRequests.post("/user/", data=data)
+
         Assertions.assert_code_status(response, 200)
         Assertions.assert_json_has_key(response, "id")
 
@@ -49,6 +51,7 @@ class TestUserRegister(BaseCase):
         assert response.content.decode(
             "utf-8") == f"The following required params are missed: {field}", f"Unexpected content {response.content}"
 
+    @allure.story('story_1')
     def test_create_user_with_one_symbol_username(self):
         data = {
             'password': '123',
